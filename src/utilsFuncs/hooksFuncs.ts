@@ -1,25 +1,39 @@
 import { nanoid } from "nanoid";
 import { useEffect, useState } from "react";
-import { songsUrlType } from "./interfaces";
+import { songType, songsUrlType } from "./interfaces";
 
 export const useSongsHandle = () => {
     
     const [songsArray, setSongsArray] = useState<songsUrlType[]>([]);
+    const [songSelected, setSongSelected] = useState<songType|null>(null);
 
     const getSongs = () => {
-        //const songs = importAll('./assets/songs');
-        const songsObj = import.meta.glob('../assets/songs/*.{mp3,m4a,wav,aiff}');
+        const songsObj = import.meta.glob('../../public/songs/*.{mp3,m4a,wav,aiff}');
         const songsArray = Object.keys(songsObj);
-        const songs = songsArray.map(name => ({
-            id:nanoid(),
-            url:name
-        }))
+        const songs = songsArray.map(name => {
+            console.log(name);
+            
+            const songName = name ? name.split('../../public')[1] : '';
+            const url = '.' + songName;
+            return {
+                id:nanoid(),
+                url
+            }
+        })
         setSongsArray(songs);
+        songs.length && setSongSelected({
+            ...songs[0],
+            artist:'',
+            index:1,
+            song:'',
+            album:'',
+            pictureURL:''
+        })
     }
     
     useEffect(() => {
         getSongs();
     }, [])
 
-    return {songsArray};
+    return {songsArray,songSelected};
 }

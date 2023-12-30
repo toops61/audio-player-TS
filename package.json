@@ -11,10 +11,14 @@
     "sass": "sass --watch ./src/styles/sass/main.scss:./src/styles/style.css --style compressed"
   },
   "dependencies": {
+    "@reduxjs/toolkit": "^2.0.1",
+    "@types/jsmediatags": "^3.9.6",
+    "jsmediatags": "^3.9.7",
     "nanoid": "^5.0.4",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-query": "^3.39.3",
+    "react-redux": "^9.0.4",
     "sass": "^1.69.6"
   },
   "devDependencies": {
