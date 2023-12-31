@@ -1,54 +1,30 @@
-import { useEffect, useRef, useState } from "react";
+import { useRef } from "react";
 import { useSongsHandle } from "./utilsFuncs/hooksFuncs";
 import ScreenDisplay from "./components/ScreenDisplay";
+import Controls from "./components/Controls";
+import { useAppDispatch } from "./redux/hooks";
+import { updateGeneralParams } from "./redux/generalParamsSlice";
 
 function App() {
-  const { songsArray,songSelected } = useSongsHandle();
-  const [duration, setDuration] = useState(0);
-  const [play, setPlay] = useState(false);
-
   const audioRef = useRef<HTMLAudioElement>(null);
 
-  useEffect(() => {
-    songsArray && console.log(songsArray);
-  }, [songsArray])
-  useEffect(() => {
-    songSelected && console.log(songSelected);
-  }, [songSelected])
-  
-  useEffect(() => {
-    if (audioRef.current) {
-      setDuration(audioRef.current?.duration);
+  const { songSelected } = useSongsHandle();
+
+  const dispatch = useAppDispatch();
+
+  const getDuration = () => {
+    if (audioRef?.current) {
+      const duration = audioRef.current.duration;
+      dispatch(updateGeneralParams({duration}));
       audioRef.current.volume = .1;
-      console.log(audioRef);
-      
     }
-  }, [audioRef.current])
-
-  const getDuration = (e) => {
-    console.log(e);
-  }
-
-  const handlePlay = e => {
-    //if (!timerAudio && !play && songSelected.id === 1 && random) randomSong();
-    setPlay(!play);
-    if (audioRef.current) {
-      console.log(audioRef);
-      !play ? audioRef.current.play() : audioRef.current.pause();
-      
-    }
-  }
+  };  
 
   return (
     <main className="App">
-      <h1>Player</h1>
-      <div className="audio-player-page">
       {songSelected ? <div className="player-body">
-          <audio src={songSelected.url} className="song" ref={audioRef} onDurationChange={e => getDuration(e)}></audio>
-          <button className={play ? "play-pause active" : "play-pause"} onClick={handlePlay}>
-            <div className="play"></div>
-            <div className="pause"></div>
-          </button>
+          <audio src={songSelected.url} className="song" ref={audioRef} onDurationChange={getDuration}></audio>
+          
           <div className="player-back">
             <div className="triangle-corner"></div>
           </div>
@@ -84,9 +60,9 @@ function App() {
               {repeat === 'one' ? <p>1</p> : <></>}
             </div>
           </section> */}
-          <ScreenDisplay length={songsArray.length} songSelected={songSelected} />
+          <ScreenDisplay audioRef={audioRef} />
+          <Controls audioRef={audioRef} />
         </div> : <></>}
-      </div>
     </main>
   )
 }

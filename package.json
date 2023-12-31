@@ -13,7 +13,6 @@
   "dependencies": {
     "@reduxjs/toolkit": "^2.0.1",
     "@types/jsmediatags": "^3.9.6",
-    "jsmediatags": "^3.9.7",
     "nanoid": "^5.0.4",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",

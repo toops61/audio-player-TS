@@ -1,18 +1,24 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 
+interface paramsType {
+    duration?: number;
+    isLoading?: boolean;
+    random?: boolean;
+    repeat?: ''|'ONE'|'ALL';
+}
+
 const initialState = {
+    duration: 0,
     isLoading: false,
-    connected: false,
-    alertVisible: false,
-    alertMessage: '',
-    alertType: ''
+    random:false,
+    repeat:''
 }
 
 const generalParamsSlice = createSlice({
     name: "generalParams",
     initialState,
     reducers: {
-        updateGeneralParams: (state,action: PayloadAction<{[key:string]:string|boolean}>) => {
+        updateGeneralParams: (state,action: PayloadAction<paramsType>) => {
             state = {...state,...action.payload};
             return state;
         }
