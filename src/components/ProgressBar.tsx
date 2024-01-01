@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { MouseEvent, useRef, useState } from "react";
 import { useAppSelector } from "../redux/hooks";
 import { formatTime } from "../utilsFuncs/utils";
 
@@ -16,17 +16,20 @@ export default function ProgressBar({audioRef}:{audioRef:React.RefObject<HTMLAud
     return progress;
   }
 
-  const jumpCurrent = e => {
-    const clickPosition = e.nativeEvent.layerX;
-    const barLength = document.querySelector('.progress-bar').offsetWidth;
-    const x = Math.round((clickPosition * generalParams.duration) / barLength);
-    /* audioRef?.current?.currentTime = x;
-    setTimerAudio(x); */
+  const jumpCurrent = (e:MouseEvent<HTMLDivElement>) => {
+      if (progressRef.current) {
+        const containerPosition = Math.round(progressRef.current.getBoundingClientRect().x);
+        const clickPosition = e.pageX - containerPosition;
+        const barLength = progressRef.current.offsetWidth;        
+        const x = Math.round((clickPosition * generalParams.duration) / barLength);
+        audioRef?.current && (audioRef.current.currentTime = x);
+        setTimerAudio(x);
+    }
   }
 
   return (
     <section className="progressbar-container">
-        <div className="progress-bar" onClick={jumpCurrent}>
+        <div className="progress-bar" onClick={jumpCurrent} ref={progressRef} >
         <div className="progress" style={{transform:`translateX(${audioRef?.current ? displayTimeBar() : 0}%)`}}></div>
         </div>
         <div className="time">

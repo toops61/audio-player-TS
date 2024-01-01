@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import { updateGeneralParams } from "../redux/generalParamsSlice";
+import VolumeControl from "./VolumeControl";
 
 export default function Controls({audioRef}:{audioRef:React.RefObject<HTMLAudioElement>|null}) {
     const [play, setPlay] = useState(false);
@@ -24,10 +25,10 @@ export default function Controls({audioRef}:{audioRef:React.RefObject<HTMLAudioE
           case '':
             dispatch(updateGeneralParams({repeat:'ALL'}));
             break;
-          case 'all':
+          case 'ALL':
             dispatch(updateGeneralParams({repeat:'ONE'}));
             break;
-          case 'one':
+          case 'ONE':
             dispatch(updateGeneralParams({repeat:''}));
             break;
           default:
@@ -43,8 +44,16 @@ export default function Controls({audioRef}:{audioRef:React.RefObject<HTMLAudioE
 
     }
 
+    useEffect(() => {
+      if (audioRef?.current) {
+        audioRef.current.volume = generalParams.volume;
+      }
+    }, [generalParams.volume])
+    
+
   return (
     <>
+        <VolumeControl />
         <section className="controls-container">
             <div className={generalParams.random ? "random active" : "random"} onClick={() => dispatch(updateGeneralParams({random:!generalParams.random}))}></div>
             <button className="backward" onClick={handlePrevious}></button>

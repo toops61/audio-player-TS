@@ -5,13 +5,15 @@ interface paramsType {
     isLoading?: boolean;
     random?: boolean;
     repeat?: ''|'ONE'|'ALL';
+    volume?:number;
 }
 
 const initialState = {
     duration: 0,
     isLoading: false,
     random:false,
-    repeat:''
+    repeat:'',
+    volume:.1
 }
 
 const generalParamsSlice = createSlice({

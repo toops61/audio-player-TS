@@ -32,7 +32,7 @@ export const getMetadata = async (song:songType) => {
                     song.artist = songTags.artist ?? '';
                     song.song = songTags.title ?? '';
                     song.pictureURL = (songTags.picture?.data && songTags.picture?.format) ? getCover(songTags.picture.data,songTags.picture.format) : '';
-                    console.log(songTags.picture);
+                    console.log(tag);
                 }
             },
             onError: function(error) {
