@@ -1,6 +1,7 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 
 export interface paramsType {
+    endSong?: boolean;
     isLoading?: boolean;
     playedArray?: number[];
     playing?: boolean;
@@ -11,6 +12,7 @@ export interface paramsType {
 }
 
 const initialState = {
+    endSong: false,
     isLoading: false,
     playedArray: [] as number[],
     playing: false,

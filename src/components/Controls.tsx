@@ -50,9 +50,7 @@ export default function Controls({audioRef}:{audioRef:React.RefObject<HTMLAudioE
             if (currentSongDiv.currentTime > 0.5) {
                 currentSongDiv.currentTime = 0;
             } else {
-                if (generalParams.songPlaying > 1 && !generalParams.repeat) {
-                    dispatch(updateGeneralParams({songPlaying:generalParams.songPlaying-1}));
-                }
+                generalParams.songPlaying > 1 && dispatch(updateGeneralParams({songPlaying:generalParams.songPlaying-1}));
             }
             audioRef.current.volume = generalParams.volume;
         }
@@ -60,12 +58,17 @@ export default function Controls({audioRef}:{audioRef:React.RefObject<HTMLAudioE
 
     const handleNext = () => {
         const totalSongs = songsArray.length;
-        if (generalParams.repeat === 'ONE') {
+        if (generalParams.repeat === 'ONE' && generalParams.playing) {
             audioRef?.current && (audioRef.current.currentTime = 0);
         } else {
             if (generalParams.playedArray.length < totalSongs || generalParams.repeat === 'ALL') {
                 if (!generalParams.random) {
-                    generalParams.songPlaying < totalSongs && dispatch(updateGeneralParams({songPlaying:generalParams.songPlaying+1}));
+                    if (generalParams.songPlaying < totalSongs) {
+                        dispatch(updateGeneralParams({songPlaying:generalParams.songPlaying+1}));
+                    } else {
+                        generalParams.repeat === 'ALL' && dispatch(updateGeneralParams({songPlaying:1}));
+                    }
+
                 } else {
                     const newId = getRandom(totalSongs,generalParams);
                     dispatch(updateGeneralParams({songPlaying:newId}));
@@ -88,6 +91,23 @@ export default function Controls({audioRef}:{audioRef:React.RefObject<HTMLAudioE
             audioRef?.current?.play();
           }
     }, [generalParams.songPlaying])
+
+    useEffect(() => {
+        generalParams.repeat === 'ALL' && dispatch(updateGeneralParams({playedArray:[]}));
+    }, [generalParams.repeat])
+    
+    useEffect(() => {
+        const audioDiv = audioRef?.current;
+        if (audioDiv) {
+            const duration = audioDiv?.duration;
+            if (duration && audioDiv.currentTime >= duration) console.log('fin',audioDiv.currentTime,duration);
+        }
+    }, [audioRef?.current])
+
+    useEffect(() => {
+      generalParams.endSong && handleNext();
+    }, [generalParams.endSong])
+    
     
   return (
     <>

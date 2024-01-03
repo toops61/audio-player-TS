@@ -1,6 +1,7 @@
 import { MouseEvent, useEffect, useRef, useState } from "react";
-import { useAppSelector } from "../redux/hooks";
+import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import { formatTime } from "../utilsFuncs/utils";
+import { updateGeneralParams } from "../redux/generalParamsSlice";
 
 export default function ProgressBar({audioRef}:{audioRef:React.RefObject<HTMLAudioElement>|null}) {
     const [timerAudio, setTimerAudio] = useState(0);
@@ -8,6 +9,8 @@ export default function ProgressBar({audioRef}:{audioRef:React.RefObject<HTMLAud
     const progressRef = useRef<HTMLDivElement>(null);
 
     const timeObject = useAppSelector(state => state.timeSlice);
+
+    const dispatch = useAppDispatch();
 
     //display progress bar
   const displayTimeBar = (time:number) => (-100 + (time*100)/timeObject.duration);
@@ -27,6 +30,13 @@ export default function ProgressBar({audioRef}:{audioRef:React.RefObject<HTMLAud
         const currentTime = audioDiv!.currentTime;
         const currentTimeRound = (Math.round(currentTime*10))/10;
         setTimerAudio(currentTimeRound);
+        const duration = audioDiv?.duration;
+        if (duration && currentTime >= duration) {
+            dispatch(updateGeneralParams({endSong:true}));
+            setTimeout(() => {
+                dispatch(updateGeneralParams({endSong:false}));
+            }, 500);
+        };
   }
 
   useEffect(() => {

@@ -25,7 +25,10 @@
 * {
   font-size: 1.5vw;
   @include tablette-version {
-    font-size: 3vw;
+    font-size: 4vw;
+  }
+  @include mobile-version {
+    font-size: 5vw;    
   }
 }
 /* @font-face {
