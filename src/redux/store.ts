@@ -1,12 +1,14 @@
 import { configureStore } from "@reduxjs/toolkit";
 import generalParamsSlice from "./generalParamsSlice";
 import songsSlice from "./songsSlice";
+import timeSlice from "./timeSlice";
 //import logger from "redux-logger";
 
 const store = configureStore({
     reducer: {
         generalParamsSlice,
-        songsSlice
+        songsSlice,
+        timeSlice
     }
 });
 

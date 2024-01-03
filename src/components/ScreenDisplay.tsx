@@ -1,33 +1,30 @@
-import { useEffect } from "react";
+import { useAppSelector } from "../redux/hooks";
 import { useSongsHandle } from "../utilsFuncs/hooksFuncs";
 import ProgressBar from "./ProgressBar";
 
 export default function ScreenDisplay({audioRef}:{audioRef:React.RefObject<HTMLAudioElement>|null}) {
-  const { songsArray,songSelected } = useSongsHandle();
+  const { songsArray } = useSongsHandle();
 
-  useEffect(() => {
-    songsArray && console.log(songsArray);
-  }, [songsArray])
-  useEffect(() => {
-    songSelected && console.log(songSelected);
-  }, [songSelected])
+  const songPlaying = useAppSelector(state => state.generalParamsSlice.songPlaying);
 
   return (
-      songSelected ? 
+      songsArray.length ? 
       <>
         <section className="screen-container">
-          {songSelected.pictureURL ? <img src={songSelected.pictureURL} alt="cover" /> : <div className="no-picture"></div>}
+          {songsArray[songPlaying-1].pictureURL ? <img src={songsArray[songPlaying-1].pictureURL} alt="cover" /> : <div className="no-picture"></div>}
         </section>
         <section className="title-container">
           <div className="title">
-            <h1>{songSelected.artist}</h1>
-            <p>{songSelected.song}</p>
-            <p>{songSelected.album}</p>
+            <h1>{songsArray[songPlaying-1].artist}</h1>
+            <p>{songsArray[songPlaying-1].song}</p>
+            <p>{songsArray[songPlaying-1].album}</p>
           </div>
-          <div className="title-number"><p>{`${songSelected.index}/${songsArray.length}`}</p></div>
+          <div className="title-number"><p>{`${songsArray[songPlaying-1].index}/${songsArray.length}`}</p></div>
         </section>
         <ProgressBar audioRef={audioRef} />
       </>
-    : <></>
+    : <>
+    <h1>No song found...</h1>
+    </>
   )
 }

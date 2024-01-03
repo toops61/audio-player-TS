@@ -1,5 +1,6 @@
 .player-body {
     z-index: 10;
+    position: relative;
     background-color: black;
     padding: 1em;
     display: flex;
@@ -8,7 +9,8 @@
     align-items: center;
     border-radius: 1em;
     position: relative;
-
+    min-width: 15em;
+    min-height: 27.7em;
     .selected::before {
         color: white;
     }
@@ -80,6 +82,8 @@
         z-index: 1;
         width: 13em;
         height: 13em;
+        min-width: 13em;
+        min-height: 13em;
         border-radius: 1em;
         overflow: hidden;
         display: flex;
@@ -290,5 +294,14 @@
 
     button {
         cursor: pointer;
+    }
+}
+.import-form {
+    padding: 1em;
+    bottom: -4em;
+    background-color: black;
+    margin: 1em;
+    input {
+        color: white;
     }
 }

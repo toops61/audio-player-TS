@@ -1,18 +1,22 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 
-interface paramsType {
-    duration?: number;
+export interface paramsType {
     isLoading?: boolean;
+    playedArray?: number[];
+    playing?: boolean;
     random?: boolean;
     repeat?: ''|'ONE'|'ALL';
+    songPlaying?: number;
     volume?:number;
 }
 
 const initialState = {
-    duration: 0,
     isLoading: false,
+    playedArray: [] as number[],
+    playing: false,
     random:false,
-    repeat:'',
+    repeat:'' as ''|'ONE'|'ALL',
+    songPlaying: 1,
     volume:.1
 }
 
@@ -20,10 +24,7 @@ const generalParamsSlice = createSlice({
     name: "generalParams",
     initialState,
     reducers: {
-        updateGeneralParams: (state,action: PayloadAction<paramsType>) => {
-            state = {...state,...action.payload};
-            return state;
-        }
+        updateGeneralParams: (state,action: PayloadAction<paramsType>) => ({...state,...action.payload})
     }
 })
 

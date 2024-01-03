@@ -1,47 +1,32 @@
-import { songType } from "./interfaces";
+/* export const getSongs = async (array:string[]) => {
+    const songs = await Promise.all(array.map(async name => {
+      const newPath = name.replace('.','/src');
+      //const newPath = name.replace('songs/','');
+      const url = await getSongUrl(newPath);
+      const newObject = {
+          id:nanoid(),
+          url
+      }
+      return newObject;
+    }))
+    return songs;
+} */
 
-export const getSongUrl = async (url:string) => {
-    const response = await fetch(url);
-    if (!response.ok) {
-      throw new Error("La réponse n'est pas OK");
-    }
-    const monBlob = await response.blob();
-    const dynamicUrl = URL.createObjectURL(monBlob);
-    return dynamicUrl;
-}
+import { PictureType, TagType } from "jsmediatags/types";
 
-const getCover = (data:number[],format:string) => {
+//get base64 cover from tags picture arrayBuffer inside metafunc callback
+export const getCover = (pictureObj:PictureType) => {
     let base64String = "";
-    data.map(e => base64String += String.fromCharCode(e));
-    const imageUrl = `data:${format};base64,${window.btoa(base64String)}`;
+    pictureObj.data.map(e => base64String += String.fromCharCode(e));
+    const imageUrl = `data:${pictureObj.format};base64,${window.btoa(base64String)}`;
     return imageUrl;
 }
-export const getMetadata = async (song:songType) => {
+
+//get tags with jsmediatags
+export const getMetadata = (blob:Blob,metaFunc:(tag:TagType)=>void) => {
     const jsmediatags = window.jsmediatags;
-    try {
-        const response = await fetch(song.url);
-        if (!response.ok) {
-          throw new Error("La réponse n'est pas OK");
-        }
-        const monBlob = await response.blob();
-        jsmediatags.read(monBlob, {
-            onSuccess: function(tag) {
-                const songTags = tag.tags;
-                if (songTags) {
-                    song.album = songTags.album ?? '';
-                    song.artist = songTags.artist ?? '';
-                    song.song = songTags.title ?? '';
-                    song.pictureURL = (songTags.picture?.data && songTags.picture?.format) ? getCover(songTags.picture.data,songTags.picture.format) : '';
-                    console.log(tag);
-                }
-            },
-            onError: function(error) {
-                console.log(error);
-            }
-        });
-    } catch (error) {
-        console.log(error);
-        
-    }
-    return song;
+    return jsmediatags.read(blob, {
+        onSuccess: tag => {metaFunc(tag)},
+        onError: error => console.log(error)
+    });
 }

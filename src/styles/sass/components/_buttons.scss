@@ -1,0 +1,9 @@
+.import-btn {
+    padding: .5em;
+    border-radius: 50%;
+    background-color: black;
+    border: .2em solid white;
+    &::before {
+        @include icon('\f56f',1.5em);
+    }
+}
