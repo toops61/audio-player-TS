@@ -30,3 +30,16 @@ export const getMetadata = (blob:Blob,metaFunc:(tag:TagType)=>void) => {
         onError: error => console.log(error)
     });
 }
+
+export const getTagCover = async (url:string,coverTagFunc:(tag:TagType) => void) => {
+    try {
+        const response = await fetch(url);
+        if (!response.ok) {
+            throw new Error("Could not get song url");
+        }
+        const blob = await response.blob();
+        getMetadata(blob,coverTagFunc);
+    } catch (error) {
+        console.log('error fetching song :',error);
+    }
+}

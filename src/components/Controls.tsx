@@ -1,17 +1,19 @@
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import { updateGeneralParams } from "../redux/generalParamsSlice";
 import VolumeControl from "./VolumeControl";
-import { useSongsHandle } from "../utilsFuncs/hooksFuncs";
-import { getRandom } from "../utilsFuncs/utils";
+import { activeButtonFunc, getRandom } from "../utilsFuncs/utils";
 
 export default function Controls({audioRef}:{audioRef:React.RefObject<HTMLAudioElement>|null}) {
     
-    const { songsArray } = useSongsHandle();
+    const songsArray = useAppSelector(state => state.songsSlice);
 
     const generalParams = useAppSelector(state => state.generalParamsSlice);
 
     const dispatch = useAppDispatch();
+
+    const backwardRef = useRef<HTMLButtonElement>(null);
+    const forwardRef = useRef<HTMLButtonElement>(null);
 
     const resetPlaying = () => {
         dispatch(updateGeneralParams({songPlaying:1,playing:false,playedArray:[]}));
@@ -45,38 +47,46 @@ export default function Controls({audioRef}:{audioRef:React.RefObject<HTMLAudioE
     }
 
     const handlePrevious = () => {
-        if (audioRef?.current) {
+        if (audioRef?.current && backwardRef?.current && !backwardRef.current.className.includes('active')) {
             const currentSongDiv = audioRef.current;
-            if (currentSongDiv.currentTime > 0.5) {
+            if (currentSongDiv.currentTime > 1) {
                 currentSongDiv.currentTime = 0;
             } else {
                 generalParams.songPlaying > 1 && dispatch(updateGeneralParams({songPlaying:generalParams.songPlaying-1}));
             }
             audioRef.current.volume = generalParams.volume;
+            activeButtonFunc(backwardRef);
         }
     }
 
     const handleNext = () => {
-        const totalSongs = songsArray.length;
-        if (generalParams.repeat === 'ONE' && generalParams.playing) {
-            audioRef?.current && (audioRef.current.currentTime = 0);
-        } else {
-            if (generalParams.playedArray.length < totalSongs || generalParams.repeat === 'ALL') {
-                if (!generalParams.random) {
-                    if (generalParams.songPlaying < totalSongs) {
-                        dispatch(updateGeneralParams({songPlaying:generalParams.songPlaying+1}));
-                    } else {
-                        generalParams.repeat === 'ALL' && dispatch(updateGeneralParams({songPlaying:1}));
-                    }
-
-                } else {
-                    const newId = getRandom(totalSongs,generalParams);
-                    dispatch(updateGeneralParams({songPlaying:newId}));
-                }
+        if (forwardRef?.current && !forwardRef.current.className.includes('active')) {
+            const totalSongs = songsArray.length;
+            if (generalParams.repeat === 'ONE' && generalParams.playing) {
+                audioRef?.current && (audioRef.current.currentTime = 0);
             } else {
-                resetPlaying();
+                if (generalParams.playedArray.length < totalSongs || generalParams.repeat === 'ALL') {
+                    if (!generalParams.random) {
+                        if (generalParams.songPlaying < totalSongs) {
+                            dispatch(updateGeneralParams({songPlaying:generalParams.songPlaying+1}));
+                        } else {
+                            generalParams.repeat === 'ALL' && dispatch(updateGeneralParams({songPlaying:1}));
+                        }
+    
+                    } else {
+                        const newId = getRandom(totalSongs,generalParams);
+                        dispatch(updateGeneralParams({songPlaying:newId}));
+                    }
+                } else {
+                    resetPlaying();
+                }
             }
+            activeButtonFunc(forwardRef);
         }
+    }
+
+    const handleSort = () => {
+        dispatch(updateGeneralParams({sortBy:generalParams.sortBy === 'album' ? 'year' : 'album'}));
     }
 
     useEffect(() => {
@@ -114,16 +124,20 @@ export default function Controls({audioRef}:{audioRef:React.RefObject<HTMLAudioE
         <VolumeControl />
         <section className="controls-container">
             <div className={generalParams.random ? "random active" : "random"} onClick={() => dispatch(updateGeneralParams({random:!generalParams.random}))}></div>
-            <button className="backward" onClick={handlePrevious}></button>
+            <button className="backward" onClick={handlePrevious} ref={backwardRef} ></button>
             <button className={generalParams.playing ? "play-pause active" : "play-pause"} onClick={handlePlay}>
               <div className="play"></div>
               <div className="pause"></div>
             </button>
-            <button className="forward" onClick={handleNext}></button>
+            <button className="forward" onClick={handleNext} ref={forwardRef} ></button>
             <div className={generalParams.repeat ? "repeat selected" : "repeat"} onClick={handleRepeat}>
               {generalParams.repeat === 'ONE' ? <p>1</p> : <></>}
             </div>
         </section>
+        <div className="sort-div">
+            <p>Sort by</p>
+            <p><span onClick={handleSort}>{generalParams.sortBy === 'album' ? 'album' : 'year'}</span></p>
+        </div>
     </>
   )
 }

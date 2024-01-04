@@ -11,297 +11,298 @@
     position: relative;
     min-width: 15em;
     min-height: 27.7em;
-    .selected::before {
-        color: white;
-    }
+}
+.selected::before {
+    color: white;
+}
 
-    ::before {
-        color: #5d5d5d;
-    }
+::before {
+    color: #5d5d5d;
+}
 
-    p {
-        color: #a5a5a5;
-        font-size: .8em;
-    }
+p {
+    font-size: .8em;
+}
 
-    .triangle-corner {
-        position: absolute;
-        border: solid;
-        border-color: transparent rgb(232, 232, 232) transparent transparent;
-        border-width: .7em;
-        transform: rotate(-35deg);
-        right: .4em;
-        top: -.4em;
-    }
+.triangle-corner {
+    position: absolute;
+    border: solid;
+    border-color: transparent rgb(232, 232, 232) transparent transparent;
+    border-width: .7em;
+    transform: rotate(-35deg);
+    right: .4em;
+    top: -.4em;
+}
 
-    .player-front {
-        position: absolute;
-        background-color: black;
-        width: 100%;
-        height: 100%;
-        border-radius: 1em;
-    }
-    .player-back {
-        z-index: -10;
-        position: absolute;
-        background-color: rgb(232, 232, 232);
-        width: 15em;
-        height: 27em;
-        border-radius: 1em;
-        transform: translate(.7em, .7em);
-    }
+.player-front {
+    position: absolute;
+    background-color: black;
+    width: 100%;
+    height: 100%;
+    border-radius: 1em;
+}
+.player-back {
+    z-index: -10;
+    position: absolute;
+    background-color: rgb(232, 232, 232);
+    width: 15em;
+    height: 27em;
+    border-radius: 1em;
+    transform: translate(.7em, .7em);
+}
 
-    .volume-buttons {
-        z-index: 50;
-        position: absolute;
-        top: 1em;
-        right: -.7em;
-        margin: 2em .1em;
-        height: 5em;
-        width: 0.5em;
-        background-color: black;
+.volume-buttons {
+    position: absolute;
+    top: 1em;
+    right: -.7em;
+    margin: 2em .1em;
+    height: 5em;
+    width: 0.5em;
+    background-color: black;
+    border-radius: .3em;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-end;
+    padding: .2em 0;
+    .volume {
+        font-size: 100%;
+        width: .4em;
+        flex: 1;
+        border: none;
         border-radius: .3em;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: flex-end;
-        padding: .2em 0;
-        .volume {
-            font-size: 100%;
-            width: .4em;
-            flex: 1;
-            border: none;
-            border-radius: .3em;
-            margin: .2em 0;
-            border-left: solid .15em rgb(169, 169, 169);
-            border-right: solid .05em black;
-        }
+        margin: .2em 0;
+        border-left: solid .15em rgb(169, 169, 169);
+        border-right: solid .05em black;
     }
+}
 
-    .screen-container {
-        z-index: 1;
-        width: 13em;
-        height: 13em;
-        min-width: 13em;
-        min-height: 13em;
-        border-radius: 1em;
-        overflow: hidden;
-        display: flex;
-        justify-content: center;
-        align-items: center;
+.screen-container {
+    z-index: 1;
+    width: 13em;
+    height: 13em;
+    min-width: 13em;
+    min-height: 13em;
+    border-radius: 1em;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 
-        img {
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
-        }
-    }
-
-    .no-picture {
+    img {
         width: 100%;
         height: 100%;
-        border-radius: 1em;
-        border: solid .1em white;
-        @include flexCenter;
-
-        &::before {
-            @include iconBrands('\f3b5', 6em);
-            color: white;
-        }
+        object-fit: contain;
     }
+}
 
-    .title-container {
-        position: relative;
-        width: 94%;
-        display: flex;
-        align-items: flex-end;
-    }
+.no-picture {
+    width: 100%;
+    height: 100%;
+    border-radius: 1em;
+    border: solid .1em white;
+    @include flexCenter;
 
-    .title {
-        min-height: 3.4em;
-        h1 {
-            color: white;
-            font-size: 1.2em;
-            white-space: nowrap;
-            overflow: hidden;
-            max-width: 10.8em;
-            text-overflow: ellipsis;
-        }
-        p {
-            font-size: .9em;
-            white-space: nowrap;
-            overflow: hidden;
-            max-width: 14em;
-            text-overflow: ellipsis;
-        }
-    }
-
-
-
-    .title p:nth-child(3) {
-        max-width: 12em;
+    &::before {
+        @include iconBrands('\f3b5', 6em);
         color: white;
     }
+}
 
-    .title-number {
-        position: absolute;
-        right: 0;
-    }
+.title-container {
+    position: relative;
+    width: 94%;
+    display: flex;
+    align-items: flex-end;
+}
 
-    .progressbar-container {
-        z-index: 1;
-        width: 100%;
-        height: 3em;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        margin-top: 1em;
-        p {
-            color: white;
-        }
-        .progress-bar {
-            cursor: pointer;
-            overflow: hidden;
-            position: relative;
-            width: 94%;
-            height: .4em;
-            background-color: rgb(199, 199, 199);
-            border-radius: .2em;
-            .progress {
-                position: absolute;
-                width: 100%;
-                height: 100%;
-                background-color: rgb(0, 231, 224);
-                transform: translateX(-100%);
-                border-radius: .2em;
-            }
-        }
-        .time {
-            width: 94%;
-            display: flex;
-            justify-content: space-between;
-            margin-top: .2em;
-            p:first-child {
-                cursor: pointer;
-            }
-        }
-
-    }
-
-    .controls-container {
-        position: relative;
-        width: 94%;
-        height: 5em;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-
-        button {
-            font-size: 100%;
-        }
-    }
-
-    .random {
-        cursor: pointer;
-        position: absolute;
-        left: 0;
-        color: #5d5d5d;
-        &.active::before {
-            color: white;
-        }
-    }
-
-
-    .random::before {
-        @include icon('\f074', 1.5em);
-    }
-
-    .backward,
-    .forward {
-        background-color: inherit;
-        border: none;
+.title {
+    min-height: 3.4em;
+    h1 {
         color: white;
-    }
-
-    .backward::before {
-        @include icon('\f048', 1.4em);
-    }
-
-    .play-pause {
-        border-radius: 50%;
-        width: 3.5em;
-        height: 3.5em;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        margin: 0 .8em;
+        font-size: 1.2em;
+        white-space: nowrap;
         overflow: hidden;
-        background-color: rgb(0, 142, 137);
-        border: none;
+        max-width: 10.8em;
+        text-overflow: ellipsis;
     }
-
-    .play-pause.active {
-        background-color: rgb(0, 231, 224);
+    p {
+        font-size: .9em;
+        white-space: nowrap;
+        overflow: hidden;
+        max-width: 14em;
+        text-overflow: ellipsis;
     }
-
-    .play {
-        transform: translateX(.1em);
+    .song-title {
+        color: #a5a5a5;
     }
+}
 
-    .pause {
-        display: none;
-    }
+.title p:nth-child(3) {
+    max-width: 12em;
+    color: white;
+}
 
-    .active .play {
-        display: none;
-    }
+.title-number {
+    position: absolute;
+    right: 0;
+}
 
-    .active .pause {
-        display: flex;
-    }
-
-    .play::before {
-        @include icon('\f04b', 1.2em);
-    }
-
-    .pause::before {
-        @include icon('\f04c', 1.3em);
-    }
-
-    .forward::before {
-        @include icon('\f051', 1.4em);
-    }
-
-    .repeat {
-        cursor: pointer;
+.progressbar-container {
+    z-index: 1;
+    width: 100%;
+    height: 2em;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-top: 1em;    
+}
+.progress-bar {
+    cursor: pointer;
+    overflow: hidden;
+    position: relative;
+    width: 94%;
+    height: .4em;
+    background-color: rgb(199, 199, 199);
+    border-radius: .2em;
+    .progress {
         position: absolute;
-        right: 0;
-        color: #5d5d5d;
-        p {
-            position: absolute;
-            top: .6em;
-            left: 1em;
-            font-size: .6em;
-            font-weight: bold;
-            color: white;
-        }
+        width: 100%;
+        height: 100%;
+        background-color: rgb(0, 231, 224);
+        transform: translateX(-100%);
+        border-radius: .2em;
     }
-
-    .repeat::before {
-        @include icon('\f363', 1.4em);
-    }
-
-    button {
+}
+.time {
+    width: 94%;
+    display: flex;
+    justify-content: space-between;
+    margin-top: .2em;
+    p:first-child {
         cursor: pointer;
     }
 }
-.import-form {
-    padding: 1em;
-    bottom: -4em;
-    background-color: black;
-    margin: 1em;
-    input {
-        color: white;
+
+.controls-container {
+    position: relative;
+    width: 94%;
+    height: 4em;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    button {
+        font-size: 100%;
     }
+}
+
+.random {
+    cursor: pointer;
+    position: absolute;
+    left: 0;
+    color: #5d5d5d;
+}
+
+.active::before {
+    color: white;
+}
+
+.random::before {
+    @include icon('\f074', 1.5em);
+}
+
+.backward,
+.forward {
+    background-color: inherit;
+    border: none;
+}
+
+.play-pause {
+    border-radius: 50%;
+    width: 3.5em;
+    height: 3.5em;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 .8em;
+    overflow: hidden;
+    background-color: rgb(0, 142, 137);
+    border: none;
+}
+
+.play-pause.active {
+    background-color: rgb(0, 231, 224);
+}
+
+.play {
+    transform: translateX(.1em);
+}
+
+.pause {
+    display: none;
+}
+
+.active .play {
+    display: none;
+}
+
+.active .pause {
+    display: flex;
+}
+
+.play::before {
+    @include icon('\f04b', 1.2em);
+}
+
+.pause::before {
+    @include icon('\f04c', 1.3em);
+}
+
+.backward::before {
+    @include icon('\f048', 1.4em);
+}
+
+.forward::before {
+    @include icon('\f051', 1.4em);
+}
+
+.repeat {
+    cursor: pointer;
+    position: absolute;
+    right: 0;
+    color: #5d5d5d;
+    p {
+        position: absolute;
+        top: .6em;
+        left: 1em;
+        font-size: .6em;
+        font-weight: bold;
+    }
+}
+
+.repeat::before {
+    @include icon('\f363', 1.4em);
+}
+
+.sort-div {
+    display: flex;
+    align-items: center;
+    width: 94%;
+    z-index: 1;
+    padding-top: .5em;
+    p {
+        margin-right: .3em;
+        font-size: .9em;
+    }
+    span {
+        color: aqua;
+        font-size: 1em;
+        cursor: pointer;
+    }
+}
+
+p {
+    color: white;
 }

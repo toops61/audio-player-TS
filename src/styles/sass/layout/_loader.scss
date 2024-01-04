@@ -6,20 +6,28 @@
     width: 100vw;
     height: 100vh;
     background-color: black;
-    @include flexCenter;
-    &__disc-container {
+    @include flexColumn;
+    justify-content: center;
+    h1 {
+        font-size: 2em;
+    }
+    .discs-container {
+        @include flexCenter;
+        margin-top: 6em;
+    }
+    .disc-container {
         display: flex;
         flex-direction: column;
         align-items: center;
     }
-    &__disc {
+    .disc {
         animation: disc-rotate .8s linear infinite;
         &::before {
             @include icon('\f51f',3em);
             color: white;
         }
     }
-    &__disc-inside {
+    .disc-inside {
         animation: disc-bounce .8s ease-out infinite alternate;
         margin: 0 .5em;
     }
@@ -31,13 +39,13 @@
         animation: shadow-grow .8s ease-out infinite alternate;
         filter: blur(.05em);
     }
-    &__disc-container:nth-child(2) {
-        .loader__disc-inside,.disc-shadow {
+    .disc-container:nth-child(2) {
+        .disc-inside,.disc-shadow {
             animation-delay: .2s;
         }
     }
-    &__disc-container:nth-child(3) {
-        .loader__disc-inside,.disc-shadow {
+    .disc-container:nth-child(3) {
+        .disc-inside,.disc-shadow {
             animation-delay: .4s;
         }
     }

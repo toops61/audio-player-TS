@@ -1,4 +1,6 @@
+import { RefObject } from "react";
 import { paramsType } from "../redux/generalParamsSlice";
+import { songType } from "./interfaces";
 
 export const formatTime = (time:number) => {
     const seconds = Math.floor(time%60);
@@ -27,4 +29,32 @@ export const getRandom = (max:number,generalParams:paramsType) => {
     } else {
         return 1;
     }
+}
+
+export const activeButtonFunc = (div:RefObject<HTMLButtonElement>) => {
+    div.current!.classList.add('active');
+    setTimeout(() => {
+        div.current!.classList.remove('active');
+    }, 200);
+}
+
+export const sortFunction = (array:songType[],sortBy:string) => {
+    const tempArray = [...array];
+    tempArray.sort((a,b) => {
+        if (a.artist < b.artist) {
+            return -1;
+        } else if (a.artist === b.artist) {
+                if (a[sortBy] < b[sortBy]) {
+                    return -1;
+                } else if (a[sortBy] === b[sortBy]) {
+                    return a.track < b.track ? -1 : 1;
+                } else {
+                    return 1;
+                }
+        } else {
+            return 1;
+        }
+    });
+    const indexedArray = tempArray.map((song,index) => ({...song,index:index+1}));
+    return indexedArray;
 }
