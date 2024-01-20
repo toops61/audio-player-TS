@@ -5,11 +5,13 @@ import Controls from "./components/Controls";
 import { useAppDispatch, useAppSelector } from "./redux/hooks";
 import { updateTime } from "./redux/timeSlice";
 import Loader from "./components/Loader";
+import Footer from "./components/Footer";
 
 function App() {
   const audioRef = useRef<HTMLAudioElement>(null);
 
   const generalParams = useAppSelector(state => state.generalParamsSlice);
+  const songsSlice = useAppSelector(state => state.songsSlice);
 
   const dispatch = useAppDispatch();
 
@@ -26,16 +28,17 @@ function App() {
     <main className="App">
       {generalParams.isLoading ? <Loader /> :
       <div className="player-body">
-          <audio src={songsArray.length ? songsArray[generalParams.songPlaying-1]?.url : ''} className="song" ref={audioRef} onDurationChange={getDuration}></audio>
-          
-          <div className="player-back">
-            <div className="triangle-corner"></div>
-          </div>
-          <div className="player-front"></div>
           {
-            songsArray.length ? <>
+            songsSlice.length ? 
+            <>
+              <audio src={songsArray[generalParams.songPlaying-1]?.url} className="song" ref={audioRef} onDurationChange={getDuration}></audio>
+              <div className="player-back">
+                <div className="triangle-corner"></div>
+              </div>
+              <div className="player-front"></div>
               <ScreenDisplay audioRef={audioRef} />
               <Controls audioRef={audioRef} />
+              <Footer />
             </> : <></>
           }
         </div>}

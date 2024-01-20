@@ -85,10 +85,6 @@ export default function Controls({audioRef}:{audioRef:React.RefObject<HTMLAudioE
         }
     }
 
-    const handleSort = () => {
-        dispatch(updateGeneralParams({sortBy:generalParams.sortBy === 'album' ? 'year' : 'album'}));
-    }
-
     useEffect(() => {
       if (audioRef?.current) {
         audioRef.current.volume = generalParams.volume;
@@ -134,10 +130,6 @@ export default function Controls({audioRef}:{audioRef:React.RefObject<HTMLAudioE
               {generalParams.repeat === 'ONE' ? <p>1</p> : <></>}
             </div>
         </section>
-        <div className="sort-div">
-            <p>Sort by</p>
-            <p><span onClick={handleSort}>{generalParams.sortBy === 'album' ? 'album' : 'year'}</span></p>
-        </div>
     </>
   )
 }

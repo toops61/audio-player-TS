@@ -46,7 +46,6 @@ export default function ScreenDisplay({audioRef}:{audioRef:React.RefObject<HTMLA
             <p className="song-title">{songsArray[songPlaying-1].song}</p>
             <p>{songsArray[songPlaying-1].album}</p>
           </div>
-          <div className="title-number"><p>{`${songsArray[songPlaying-1].index}/${songsArray.length}`}</p></div>
         </section>
         <ProgressBar audioRef={audioRef} />
       </>

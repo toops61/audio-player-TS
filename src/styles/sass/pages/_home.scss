@@ -143,11 +143,6 @@ p {
     color: white;
 }
 
-.title-number {
-    position: absolute;
-    right: 0;
-}
-
 .progressbar-container {
     z-index: 1;
     width: 100%;
@@ -284,23 +279,6 @@ p {
 
 .repeat::before {
     @include icon('\f363', 1.4em);
-}
-
-.sort-div {
-    display: flex;
-    align-items: center;
-    width: 94%;
-    z-index: 1;
-    padding-top: .5em;
-    p {
-        margin-right: .3em;
-        font-size: .9em;
-    }
-    span {
-        color: aqua;
-        font-size: 1em;
-        cursor: pointer;
-    }
 }
 
 p {
